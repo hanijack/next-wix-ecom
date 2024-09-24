@@ -19,7 +19,7 @@ const slides = [
     description: "Sale! Up to 50% off!",
     img: "https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800",
     url: "/",
-    bg: "bg-gradient-to-r from-pink-50 to-blue-50",
+    bg: "bg-white-100",
   },
   {
     id: 3,

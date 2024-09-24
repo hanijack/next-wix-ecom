@@ -18,12 +18,12 @@ const Header = () => {
       {/* medium screens */}
       <div className="hidden md:flex h-full items-center justify-between gap-8 ">
         <div className="w-1/3 xl:w-1/2 flex justify-between gap-2 ">
-          <Link href="" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2">
             <Image src="/logo.png" alt="logo" width={24} height={24} />
-            <div className="text-xl tracking-wide">DAMA</div>
+            <div className="text-xl tracking-wide">MADA</div>
           </Link>
           <div className="hidden xl:flex gap-4">
-            <Link href="">Home</Link>
+            <Link href="/">Home</Link>
             <Link href="">About</Link>
             <Link href="">Shop</Link>
             <Link href="">Deals</Link>
