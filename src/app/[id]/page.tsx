@@ -20,7 +20,7 @@ const SingleProduct = async ({params }) => {
         <ProductGallery images={product.media?.items}/>
         </div>
         <div className='w-full lg:w-1/2 flex flex-col gap-4'>
-          <h1 className='text-4xl font-medium'>{product.name}</h1>
+          <h1 className='text-4xl font-medium '>{product.name}</h1>
           <p className='text-gray-500'>{product.description}</p>
           <div>
           {product.price?.price === product.price?.discountedPrice ? (
@@ -37,7 +37,6 @@ const SingleProduct = async ({params }) => {
         )}
           </div>
           <Customize variants={product.variants} options={product.productOptions} id={product._id}/>
-        </div>
         <div className="h-[2px] bg-gray-100" />
         {product.additionalInfoSections?.map((section: any) => (
           <div className="text-sm" key={section.title}>
@@ -45,6 +44,7 @@ const SingleProduct = async ({params }) => {
             <p>{section.description}</p>
           </div>
               ))}
+        </div>
     </div>
   )
 }

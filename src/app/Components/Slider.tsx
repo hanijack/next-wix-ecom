@@ -32,7 +32,7 @@ const slides = [
 ];
 
 const Slider = () => {
-    const [current, setCurrent] = useState(2);
+    const [current, setCurrent] = useState(0);
 
 
 

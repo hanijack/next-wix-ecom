@@ -9,18 +9,6 @@ import { WixClientContext } from "./context/wixContext"
 import { wixClientServer } from "./lib/wixServer"
 
 const HomePage =async () => {
-  // const wixclient = useContext(WixClientContext)
-
-  // useEffect(() => {
-  //   const getProducts = async()=>{
-  //     const res = await wixclient.products.queryProducts().find()
-  //     console.log(res)
-
-  //   }
-  //   getProducts()
-  
-    
-  // }, [wixclient])
 
   return (
     <div>

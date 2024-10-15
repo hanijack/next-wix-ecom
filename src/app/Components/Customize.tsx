@@ -10,7 +10,6 @@ const Customize = ({ variants, options, id }) => {
 
     setChoicee((prev) => ({ ...prev, [option]: value }));
   };
-  console.log(choicee)
   
   const availability = (c) => {
     return variants.some((variant) => {
@@ -28,15 +27,14 @@ const Customize = ({ variants, options, id }) => {
       );
     });
   };
-  console.log(choicee)
- 
+  
   return <div className="flex flex-col gap-4">
     {options.map(option =>(
       <div key={option.name}>
-        <h3 className="font-bold">{option.name}</h3>
+        <h3 className="font-bold py-6">{option.name}</h3>
         <ul className="flex items-center gap-3">
           {option.choices?.map(choice =>{
-             const disabled = !availability({
+              const disabled = !availability({
               ...choicee,
               [option.name!]: choice.description!,
             });
