@@ -4,7 +4,6 @@ import {useState} from 'react'
 
 const ProductGallery = ({images}) => {
     const [index , setIndex]= useState(0)
-    // console.log(images)
   return (
     <>
     <div className='h-[450px] relative '>

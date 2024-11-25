@@ -6,7 +6,6 @@ import { usePathname, useSearchParams ,useRouter } from 'next/navigation'
 import { WixClientContext } from "../context/wixContext"
 import Cookies from "js-cookie";
 
-
 const options = {
   LOGIN:"login",
   REGISTER:"register",
@@ -14,21 +13,13 @@ const options = {
   VERIFICATION: "verification"
 }
 
-
-
 const Login = () => {
 
   const wixClient= useContext(WixClientContext)
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams();
-  const { replace } = useRouter();
-  const params = new URLSearchParams(searchParams);
-
   const isLogged = wixClient.auth.loggedIn()
   
   if(isLogged){
-
     router.push("/")
   }
   
@@ -50,7 +41,6 @@ const Login = () => {
       ? "Reset Your Password"
       : "Verify Your Email";
 
-
       const buttonTitle =
     mode === options.LOGIN
       ? "Login"
@@ -64,47 +54,44 @@ const Login = () => {
         e.preventDefault();
         setLoading(true);
         setError("");
-      }
-      try {
-        let response;
-  
-        switch (mode) {
-          case MODE.LOGIN:
-            response = await wixClient.auth.login({
-              email,
-              password,
-            });
-            break;
-          case MODE.REGISTER:
-            response = await wixClient.auth.register({
-              email,
-              password,
-              profile: { nickname: username },
-            });
-            break;
-          case MODE.RESET_PASSWORD:
-            response = await wixClient.auth.sendPasswordResetEmail(
-              email,
-              window.location.href
-            );
-            setMessage("Password reset email sent. Please check your e-mail.");
-            break;
-          case MODE.EMAIL_VERIFICATION:
-            response = await wixClient.auth.processVerification({
-              verificationCode: emailCode,
-            });
-            break;
-          default:
-            break;
-        }
-  
+        try {
+          let response;
+          
+          switch (mode) {
+            case mode.LOGIN:
+              response = await wixClient.auth.login({
+                email,
+                password,
+              });
+              break;
+            case mode.REGISTER:
+              response = await wixClient.auth.register({
+                email,
+                password,
+                profile: { nickname: userName },
+              });
+              break;
+            case mode.RESET_PASSWORD:
+                response = await wixClient.auth.sendPasswordResetEmail(
+                  email,
+                  window.location.href
+                );
+                setMessage("Password reset email sent. Please check your e-mail.");
+                break;
+            case mode.EMAIL_VERIFICATION:
+                  response = await wixClient.auth.processVerification({
+                    verificationCode: emailCode,
+                  });
+                  break;
+              default:
+                    break;
+                    }
         switch (response?.loginState) {
           case LoginState.SUCCESS:
             setMessage("Successful! You are being redirected.");
             const tokens = await wixClient.auth.getMemberTokensForDirectLogin(
               response.data.sessionToken!
             );
-  
             Cookies.set("refreshToken", JSON.stringify(tokens.refreshToken), {
               expires: 2,
             });
@@ -135,8 +122,9 @@ const Login = () => {
         console.log(err);
         setError("Something went wrong!");
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
+    }
 
   return (
     <div className="h-[calc(100vh-80px)] px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64 flex items-center justify-center" >
@@ -150,7 +138,7 @@ const Login = () => {
               name="username"
               placeholder="john"
               className="ring-2 ring-[#f35c7a] outline-[#eb657f] rounded-md p-4"
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </div>
         ) : null}
@@ -198,7 +186,7 @@ const Login = () => {
           </div>
         )}
         <button
-          className="bg-lama text-white p-2 rounded-md disabled:bg-pink-200 disabled:cursor-not-allowed"
+          className="bg-[#f35c7a] text-white p-2 rounded-md disabled:bg-pink-200 disabled:cursor-not-allowed"
           disabled={loading}
         >
           {loading ? "Loading..." : buttonTitle}
@@ -233,5 +221,5 @@ const Login = () => {
     </div>
   )
 }
-
+// fixing not navigating to home page when logging in or registering
 export default Login

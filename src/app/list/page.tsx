@@ -2,6 +2,7 @@
 import Image from 'next/image'
 import ProductList from '../Components/ProductList'
 import { wixClientServer } from '../lib/wixServer';
+import { Suspense } from 'react';
 
 const Listpage = async ({searchParams}) => {
   const wixClient = await wixClientServer()
@@ -20,7 +21,7 @@ const Listpage = async ({searchParams}) => {
             </div>
         </div>
         <div className='flex flex-col'>
-          <ProductList cat={res.items[0]._id} limit={16}/>
+   <ProductList cat={res.items[0]._id} limit={4} searchParams={searchParams}/>
         </div>
     </div>
   )

@@ -6,6 +6,7 @@ import Customize from '../Components/customize';
 
 const SingleProduct = async ({params }) => {
   const wixClient = await wixClientServer();
+  console.log(params)
   const res = await wixClient.products.queryProducts().eq("id",params.id).find()
 
   if (!res.items[0]) {

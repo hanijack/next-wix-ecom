@@ -1,12 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
 import { wixClientServer } from '../lib/wixServer'
+import Pagination from './Pagination'
 
-const ProductList = async({cat ,limit , searchParams}:{cat:string , limit?:number}) => {
+const ProductList = async({cat ,limit ,  searchParams }:{cat:string , limit?:number}) => {
   const wixClient = await wixClientServer()
-  // console.log(searchParams)
-  const res = await wixClient.products.queryProducts().eq("collectionIds" ,cat).limit(limit).find()
+  console.log(searchParams)
+
+  const res = await wixClient.products.queryProducts().eq("collectionIds" ,cat).limit(limit).skip(
+    searchParams?.page
+      ? parseInt(searchParams.page) * (limit || PRODUCT_PER_PAGE)
+      : 0
+  ).find()
   return (
     <div className=" flex flex-col">
       
@@ -32,26 +37,11 @@ const ProductList = async({cat ,limit , searchParams}:{cat:string , limit?:numbe
             )}
           </div>
         </Link>))}
-        {/* <Link href="" className='w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]'>
-          <div className='relative w-full h-80 '>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md hover:opacity-0 ease-in-out transition-opacity z-10 duration-500'/>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md '/>
-          </div>
-        </Link>
-        <Link href="" className='w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]'>
-          <div className='relative w-full h-80 '>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md hover:opacity-0 ease-in-out transition-opacity z-10 duration-500'/>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md '/>
-          </div>
-        </Link>
-        <Link href="" className='w-full flex flex-col gap-4 sm:w-[45%] lg:w-[22%]'>
-          <div className='relative w-full h-80 '>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1021693/pexels-photo-1021693.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md hover:opacity-0 ease-in-out transition-opacity z-10 duration-500'/>
-            <Image fill alt='' sizes='25vw' src="https://images.pexels.com/photos/1926769/pexels-photo-1926769.jpeg?auto=compress&cs=tinysrgb&w=800" className='absolute object-cover rounded-md '/>
-          </div>
-        </Link> */}
         
       </div>
+            {searchParams?.cat ? (
+              <Pagination pageNumber={res.currentPage ||0} next={res.hasNext()} prev={res.hasPrev()}/>
+            ):null}
     </div>
   )
 }

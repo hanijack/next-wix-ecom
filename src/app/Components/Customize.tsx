@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState ,useEffect} from "react";
+import Add from "./Add";
 
 const Customize = ({ variants, options, id }) => {
   const [choicee, setChoicee] = useState({});
+  const [selectedVariant, setSelectedVariant] = useState();
 
   const updateChoicee = (option, value) => {
     console.log( option , value)
@@ -27,7 +29,17 @@ const Customize = ({ variants, options, id }) => {
       );
     });
   };
-  
+  useEffect(() => {
+    const variant = variants.find((v) => {
+      const variantChoices = v.choices;
+      if (!variantChoices) return false;
+      return Object.entries(choicee).every(
+        ([key, value]) => variantChoices[key] === value
+      );
+    });
+    setSelectedVariant(variant);
+  }, [choicee, variants]);
+
   return <div className="flex flex-col gap-4">
     {options.map(option =>(
       <div key={option.name}>
@@ -45,7 +57,6 @@ const Customize = ({ variants, options, id }) => {
             const clickHandler = disabled
               ? undefined
               : () => updateChoicee(option.name!, choice.description!);
-
             
               return option.name === "Color" ? (
                 <li
@@ -66,7 +77,7 @@ const Customize = ({ variants, options, id }) => {
                 </li>
               ) : (
                 <li
-                  className="ring-1 ring-lama text-lama rounded-md py-1 px-4 text-sm"
+                  className="ring-1 ring-lama text-[#f35c7a] rounded-md py-1 px-4 text-sm"
                   style={{
                     cursor: disabled ? "not-allowed" : "pointer",
                     backgroundColor: selected
@@ -89,9 +100,14 @@ const Customize = ({ variants, options, id }) => {
       </div>
       
     )
-
     )}
-      
+      <Add
+        productId={id}
+        variantId={
+          selectedVariant?._id || "00000000-0000-0000-0000-000000000000"
+        }
+        quantity={selectedVariant?.stock?.quantity || 0}
+      />
   </div>;
 };
 
