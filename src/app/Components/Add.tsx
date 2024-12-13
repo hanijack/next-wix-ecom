@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { WixClientContext } from "../context/wixContext";
 
 const Add = ({productId , variantId , quantity}) => {
 
@@ -14,7 +15,21 @@ const Add = ({productId , variantId , quantity}) => {
       setStockNumber((prev) => prev + 1);
     }
   };
-
+  const wix= useContext(WixClientContext)
+  const addItem = async()=>{
+    const res = await wix.currentCart.addToCurrentCart({
+      lineItems:[
+        {
+          catalogReference:{
+            appId:process.env.NEXT_PUBLIC_WIX_CLIENT_ID ,
+            catalogItemId:productId , 
+            options:variantId
+          },
+          quantity
+        }
+      ]
+    })
+  }
   return (
     <div className="flex flex-col gap-4">
     <h4 className="font-medium">Choose a Quantity</h4>
@@ -41,7 +56,7 @@ const Add = ({productId , variantId , quantity}) => {
           <div className="text-xs">Product is out of stock</div>
         ) : (
           <div className="text-xs">
-            Only <span className="text-orange-500">{quantity} items</span>{" "}
+            Only <span className="text-orange-500">{quantity} items</span>
             left!
             <br /> {"Don't"} miss it
           </div>
@@ -49,8 +64,8 @@ const Add = ({productId , variantId , quantity}) => {
       </div>
       
       <button
-        // onClick={() => addItem(wixClient, productId, variantId, quantity)}
-        // disabled={isLoading}
+        onClick={() => addItem(wixClient, productId, variantId, quantity)}
+        disabled={isLoading}
         className="w-36 text-sm rounded-3xl ring-1 ring-lama text-lama py-2 px-4 hover:bg-[#f35c7a] hover:text-white disabled:cursor-not-allowed disabled:bg-pink-200 disabled:ring-0 disabled:text-white disabled:ring-none"
       >
         Add to Cart

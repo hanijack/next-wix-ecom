@@ -18,7 +18,6 @@ const Login = () => {
   const wixClient= useContext(WixClientContext)
   const router = useRouter()
   const isLogged = wixClient.auth.loggedIn()
-  
   if(isLogged){
     router.push("/")
   }
@@ -50,37 +49,40 @@ const Login = () => {
       ? "Reset"
       : "Verify";
 
-      const handleSubmit = async (e) => {
+      const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
         setError("");
+        console.log(e)
         try {
           let response;
           
           switch (mode) {
-            case mode.LOGIN:
+            case options.LOGIN:
               response = await wixClient.auth.login({
                 email,
                 password,
               });
               break;
-            case mode.REGISTER:
+            case options.REGISTER:
               response = await wixClient.auth.register({
                 email,
                 password,
                 profile: { nickname: userName },
+                
               });
+              console.log(response)
               break;
-            case mode.RESET_PASSWORD:
+            case options.RESET_PASSWORD:
                 response = await wixClient.auth.sendPasswordResetEmail(
                   email,
                   window.location.href
                 );
                 setMessage("Password reset email sent. Please check your e-mail.");
                 break;
-            case mode.EMAIL_VERIFICATION:
+            case options.EMAIL_VERIFICATION:
                   response = await wixClient.auth.processVerification({
-                    verificationCode: emailCode,
+                    verificationCode: emailVerify,
                   });
                   break;
               default:
@@ -112,7 +114,7 @@ const Login = () => {
               setError("Something went wrong!");
             }
           case LoginState.EMAIL_VERIFICATION_REQUIRED:
-            setMode(MODE.EMAIL_VERIFICATION);
+            setMode(mode.EMAIL_VERIFICATION);
           case LoginState.OWNER_APPROVAL_REQUIRED:
             setMessage("Your account is pending approval");
           default:
@@ -161,7 +163,7 @@ const Login = () => {
               name="emailCode"
               placeholder="Code"
               className="ring-2 ring-[#f35c7a] rounded-md p-4 outline-[#eb657f]"
-              onChange={(e) => setEmailCode(e.target.value)}
+              onChange={(e) => setEmailVerify(e.target.value)}
             />
           </div>
         )}

@@ -11,10 +11,8 @@ const NavIcons = () => {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [cart, setCart] = useState(false);
-
   const router = useRouter();
   const path = usePathname();
-
   const wix = useContext(WixClientContext);
   const logged = wix.auth.loggedIn();
 
@@ -61,7 +59,7 @@ const NavIcons = () => {
       />
       <div
         className="relative cursor-pointer "
-        onClick={()=>setCart(prev => !prev)}
+        onClick={() => setCart((prev) => !prev)}
       >
         <Image src="/cart.png" alt="cart-logo" width={22} height={22} />
         <div className="absolute -top-4 -right-4 w-6 h-6 bg-[#F35C7A] rounded-full text-white text-sm flex items-center justify-center">
